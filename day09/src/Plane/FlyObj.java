@@ -10,6 +10,7 @@ public abstract class FlyObj {
     private int height;
     private int weight;
     private int life=1;
+    protected BufferedImage[] bao;
 
     public int getLife() {
         return life;
@@ -30,7 +31,7 @@ public abstract class FlyObj {
 
     public abstract void move();
 
-    public abstract void baozha();
+
 
     public int getX() {
         return x;

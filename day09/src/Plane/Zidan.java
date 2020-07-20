@@ -16,10 +16,6 @@ public class Zidan extends FlyObj{
         setY(getY()-getSpeed());
     }
 
-    @Override
-    public void baozha() {
-    }
-
     public int getSpeed() {
         return speed;
     }

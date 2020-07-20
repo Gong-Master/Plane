@@ -1,13 +1,15 @@
 package Plane;
 
+import java.awt.image.BufferedImage;
+
 public class Bee extends FlyObj implements JiangLi{
 
     private int life=1;
     private boolean b=true;
-    Bee(){
+    public Bee(){
         super((int)(Math.random()*(Main.WIDTH-Main.bee.getWidth())),-Main.bee.getHeight(),Main.xiaobee,1);
 //        super((int)(Math.random()*(Main.WIDTH-Main.bee.getWidth())),Main.bee.getHeight(),Main.bee);
-
+        super.bao= new BufferedImage[]{Main.bee_ember0,Main.bee_ember1,Main.bee_ember2,Main.bee_ember3};
     }
 
     @Override
@@ -27,8 +29,4 @@ public class Bee extends FlyObj implements JiangLi{
         }
     }
 
-    @Override
-    public void baozha() {
-
-    }
 }

@@ -98,17 +98,17 @@ public class Main extends JPanel{
     }
 
     //非整合：
-    private ArrayList<Zidan> bullets=new ArrayList<Zidan>();
-    private ArrayList<DiJi> dijis=new ArrayList<DiJi>();
-    private ArrayList<BigDJ> bigdj=new ArrayList<BigDJ>();
-    private ArrayList<Bee> bees=new ArrayList<Bee>();
+//    private ArrayList<Zidan> bullets=new ArrayList<Zidan>();
+//    private ArrayList<DiJi> dijis=new ArrayList<DiJi>();
+//    private ArrayList<BigDJ> bigdj=new ArrayList<BigDJ>();
+//    private ArrayList<Bee> bees=new ArrayList<Bee>();
 
     private Hero h=new Hero();
 
     //整合：
     private ArrayList<FlyObj> flyings = new ArrayList<>();
     private ArrayList<Zidan> bulletList =new ArrayList<>();
-
+    private ArrayList<BaoZha> baozhas =new ArrayList<>();
 
     //游戏状态:
     public final int START=0;
@@ -138,32 +138,72 @@ public class Main extends JPanel{
         }
     }
 
+    private static int bullcount=0;
+    private void shoutAction() {
+        bullcount++;
+        if(bullcount%12==0) {
+            Zidan[] bs = h.shoot();
+            bulletList.addAll(Arrays.asList(bs));
+//            for(int i=0;i<bs.length;i++){
+//                bulletList.add(bs[i]);
+//            }
+
+//            bulletList.add(h.shoot()[0]);
+        }
+    }
 
     //非整合计时：
-    int time=0;
+//    int time=0;
 
+    private void paintBullets(Graphics g){
+        for(int i=0;i<bulletList.size();i++){
+            Zidan fly=bulletList.get(i);
+            g.drawImage(fly.getImg(),fly.getX(),fly.getY(),this);
+        }
+    }
+
+    private void paintFlyings(Graphics g){
+        for(int i=0;i<flyings.size();i++){
+            FlyObj fly=flyings.get(i);
+            g.drawImage(fly.getImg(),fly.getX(),fly.getY(),this);
+        }
+    }
+
+    private void paintEmber(Graphics g){
+        for(int i=0;i<baozhas.size();i++){
+            BaoZha fly=baozhas.get(i);
+            g.drawImage(fly.getImg(),fly.getX(),fly.getY(),this);
+        }
+    }
+
+    private void paintScore(Graphics g) {
+        Font font=new Font("微软雅黑",3,25);
+        g.setFont(font);
+        Color c=new Color(241, 123, 118);
+        g.setColor(c);
+        g.drawString("分数:" + h.getScore(), 10, 30);
+        g.drawString("生命值:" + h.getLife(), 10, 60);
+    }
     //绘图：
     public void paint(Graphics g){
 
         super.paint(g);
+        //背景图+分数生命值
+        g.drawImage(Main.background, 0, 0, this);
 
-        //非整合计时器：
+        //整合版：
+        paintScore(g);
+        paintFlyings(g);
+        paintBullets(g);
+        paintEmber(g);
+        g.drawImage(h.getImg(), h.getX(), h.getY(), this);
+
+//        非整合计时器：
 
 //        time++;
 //        if (time == 10000) {
 //            time = 0;
 //        }
-
-        //背景图+分数生命值
-        g.drawImage(Main.background, 0, 0, this);
-
-        Font font=new Font("宋体",3,25);
-        g.setFont(font);
-        Color c=new Color(241, 123, 118);
-        g.setColor(c);
-        g.drawString(""+h.getScore(),10,30);
-        g.drawString(""+h.getLife(),10,60);
-
 
         //英雄机
 //        h.move();
@@ -273,13 +313,6 @@ public class Main extends JPanel{
 //            }
 //        }
 
-
-
-        //整合版：
-        paintFlyings(g);
-        paintBullets(g);
-        g.drawImage(h.getImg(), h.getX(), h.getY(), this);
-
         if(state==GAME_OVER){
             g.drawImage(Main.gameover, 0, 0, this);
             h.setX(Main.WIDTH/2-Main.hero0.getWidth()/2);
@@ -306,21 +339,6 @@ public class Main extends JPanel{
         }
 
     }
-
-    private void paintBullets(Graphics g){
-        for(int i=0;i<bulletList.size();i++){
-            Zidan fly=bulletList.get(i);
-            g.drawImage(fly.getImg(),fly.getX(),fly.getY(),this);
-        }
-    }
-
-    private void paintFlyings(Graphics g){
-        for(int i=0;i<flyings.size();i++){
-            FlyObj fly=flyings.get(i);
-            g.drawImage(fly.getImg(),fly.getX(),fly.getY(),this);
-        }
-    }
-
 
     public static final int WIDTH=400;
     public static final int HEIGHT=700;
@@ -354,6 +372,9 @@ public class Main extends JPanel{
                     OutOfBountsAction();
                     ZiDiPeng();
                     HeDiPeng();
+
+                    baoZhaAction();
+
                 }
                 repaint();
             }
@@ -365,20 +386,6 @@ public class Main extends JPanel{
 //        }
     }
 
-    private static int bullcount=0;
-
-    private void shoutAction() {
-        bullcount++;
-        if(bullcount%12==0) {
-            Zidan[] bs = h.shoot();
-            bulletList.addAll(Arrays.asList(bs));
-//            for(int i=0;i<bs.length;i++){
-//                bulletList.add(bs[i]);
-//            }
-
-//            bulletList.add(h.shoot()[0]);
-        }
-    }
     private void FlyingObjSteps(){
         for(int i=0;i<flyings.size();i++){
             FlyObj fly=flyings.get(i);
@@ -409,7 +416,14 @@ public class Main extends JPanel{
         }
     }
 
-
+    private void baoZhaAction(){
+        for(int i=0;i<baozhas.size();i++){
+            if(baozhas.get(i).ember()){
+                baozhas.remove(i);
+                i--;
+            }
+        }
+    }
 
     private void ZiDiPeng() {
         for (int i = 0; i < bulletList.size(); i++) {
@@ -431,6 +445,7 @@ public class Main extends JPanel{
                                 h.setCountzidan(0);
                             }
                         }
+                        baozhas.add(new BaoZha(fly));
                         flyings.remove(j);
 
                     }
@@ -445,8 +460,10 @@ public class Main extends JPanel{
     private void HeDiPeng() {
         for (int i = 0; i < flyings.size(); i++) {
             if (h.shootByFly(flyings.get(i))) {
+                baozhas.add(new BaoZha(flyings.get(i)));
                 this.flyings.remove(i);
                 h.minusLife();
+                baozhas.add(new BaoZha(h));
                 if (h.getLife() == 0) {
                     state = GAME_OVER;
                 }

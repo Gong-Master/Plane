@@ -14,6 +14,8 @@ public class Hero extends FlyObj {
 
     public Hero(){
         super(Main.WIDTH/2-Main.hero0.getWidth()/2,Main.HEIGHT-Main.hero0.getHeight()-30,Main.hero0,3);
+        super.bao= new BufferedImage[]{Main.hero_ember0,Main.hero_ember1,Main.hero_ember2,Main.hero_ember3};
+//    [Main.hero_ember0,Main.hero_ember1,Main.hero_ember2,Main.hero_ember3];
     }
 
     public int getSpeed() {
@@ -52,23 +54,6 @@ public class Hero extends FlyObj {
 //        setImg(herosImg[count%8]);
     }
 
-    @Override
-    public void baozha() {
-
-    }
-
-    public void addScore(int score){
-        this.score+=score;
-    }
-
-    public void addLife() {
-        this.setLife(this.getLife() + 1);
-    }
-
-    public void setLeixing(int leixing) {
-        this.leixing = leixing;
-    }
-
 
     public void setCountzidan(int countzidan) {
         this.countzidan = countzidan;
@@ -99,5 +84,17 @@ public class Hero extends FlyObj {
             return true;
         }else
             return false;
+    }
+
+    public void addScore(int score){
+        this.score+=score;
+    }
+
+    public void addLife() {
+        this.setLife(this.getLife() + 1);
+    }
+
+    public void setLeixing(int leixing) {
+        this.leixing = leixing;
     }
 }

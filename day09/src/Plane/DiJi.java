@@ -1,24 +1,20 @@
 package Plane;
 
+import java.awt.image.BufferedImage;
+
 public class DiJi extends FlyObj implements DiRenLei{
     private int speed=4;
     private int score=10;
 
-    protected DiJi() {
+    public DiJi() {
         super((int)(Math.random()*(Main.WIDTH-Main.airplane.getWidth())),-Main.airplane.getHeight(),Main.airplane,1);
 //        super((int)(Math.random()*(Main.WIDTH-Main.airplane.getWidth())),Main.airplane.getHeight(),Main.airplane);
-
+        super.bao= new BufferedImage[]{Main.airplane_ember0,Main.airplane_ember1,Main.airplane_ember2,Main.airplane_ember3};
     }
-
 
     @Override
     public void move() {
         setY(getY()+getSpeed());
-    }
-
-    @Override
-    public void baozha() {
-
     }
 
     public int getSpeed() {

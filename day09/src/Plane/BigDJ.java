@@ -6,9 +6,10 @@ public class BigDJ extends FlyObj implements DiRenLei{
     private int speed=3;
     private int score=45;
 
-    protected BigDJ() {
+    public BigDJ() {
         super((int)(Math.random()*(Main.WIDTH-Main.bigplane.getWidth())),-Main.bigplane.getHeight(), Main.bigplane,4);
 //        super((int)(Math.random()*(Main.WIDTH-Main.bigplane.getWidth())),Main.bigplane.getHeight(), Main.bigplane);
+        super.bao= new BufferedImage[]{Main.bigplane_ember0,Main.bigplane_ember1,Main.bigplane_ember2,Main.bigplane_ember3};
     }
 
     @Override
@@ -16,16 +17,6 @@ public class BigDJ extends FlyObj implements DiRenLei{
         setY(getY()+getSpeed());
     }
 
-
-    private BufferedImage[] BigDJs={Main.bigplane_ember0,Main.bigplane_ember0,
-            Main.bigplane_ember0,Main.bigplane_ember0,Main.bigplane_ember0,
-            Main.bigplane_ember0,Main.bigplane_ember0,Main.bigplane_ember0};
-    private int count=0;
-    @Override
-    public void baozha() {
-        count++;
-        setImg(BigDJs[count%8]);
-    }
 
     public int getSpeed() {
         return speed;
